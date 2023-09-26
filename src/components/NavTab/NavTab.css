@@ -1,0 +1,28 @@
+.navtab {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 30px;
+  display: flex;
+  justify-content: center;
+  column-gap: 10px;
+}
+
+.navtab__item {
+  width: 96px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #303030;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #ffffff;
+
+}
+
+.navtab__item:hover {
+  opacity: .7;
+}
