@@ -23,6 +23,18 @@
 
 }
 
-.navtab__item:hover {
-  opacity: .7;
+
+@media screen and (max-width: 535px) {
+  .navtab {
+    margin-bottom: 17px;
+    column-gap: 6px;
+  }
+
+  .navtab__item {
+    font-size: 10px;
+    width: 82px;
+    height: 26px;
+    text-align: center;
+    border-radius: 6px;
+  }
 }

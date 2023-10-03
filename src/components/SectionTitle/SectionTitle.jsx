@@ -2,7 +2,8 @@ import "./SectionTitle.css";
 
 
 const SectionTitle = ({ title, className }) => {
-  return <h2 className={`section-title ${className}`} > {title}</h2 >;
+  const classes = className ? `section-title ${className}` : 'section-title';
+  return <h2 className={classes} > {title}</h2 >;
 }
 
 export default SectionTitle;

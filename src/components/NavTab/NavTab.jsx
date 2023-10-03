@@ -1,24 +1,25 @@
 import './NavTab.css';
 import { Link } from 'react-router-dom';
+
 const NavTab = () => {
   return (
     <ul className="navtab">
       <li className="navtab__item">
-        <Link smooth to="#about-project">
+        <a className="link" href="#about-project">
           О проекте
-        </Link>
+        </a>
       </li>
 
       <li className="navtab__item">
-        <Link smooth to="#techs">
+        <a className="link" href="#techs" >
           Технологии
-        </Link>
+        </a>
       </li>
 
       <li className="navtab__item">
-        <Link smooth to="#about-me">
+        <a className="link" href="#about-me" >
           Студент
-        </Link>
+        </a>
       </li>
     </ul>
   )

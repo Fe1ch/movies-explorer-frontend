@@ -1,14 +1,14 @@
 import './Techs.css';
 import SectionTitle from "../SectionTitle/SectionTitle";
+
 const Techs = () => {
   return (
     <section className="techs" id="techs">
       <SectionTitle className="techs__title" title="Технологии" />
-      {/* <h2 className="techs__title section-title">Технологии</h2> */}
       <div className="techs__content">
         <h3 className="techs__content-title">7 технологий</h3>
         <p className="techs__content-subtitle">
-          На курсе веб-разработки мы освоили технологии, которые применили в
+          На курсе веб-разработки мы освоили технологии, которые применили в<br />
           дипломном проекте.
         </p>
         <ul className="techs-list">
