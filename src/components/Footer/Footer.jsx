@@ -1,6 +1,5 @@
 import './Footer.css';
 
-// import { Route,/*  Link, */ Switch } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="footer">
