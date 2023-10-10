@@ -1,4 +1,8 @@
 .navtab {
+  display: flex;
+}
+
+.navtab__items {
   list-style-type: none;
   padding: 0;
   margin: 0 0 30px;
@@ -25,7 +29,7 @@
 
 
 @media screen and (max-width: 535px) {
-  .navtab {
+  .navtab__items {
     margin-bottom: 17px;
     column-gap: 6px;
   }

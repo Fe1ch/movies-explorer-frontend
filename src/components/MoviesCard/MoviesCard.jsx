@@ -22,6 +22,7 @@ const MoviesCard = ({ link, alt, title, duration }) => {
           <button
             className={`card__button-save ${!isSaved && `card__button-save_active`
               }`}
+            type='button'
             onClick={handleSave}
           >
             Сохранить
@@ -30,7 +31,11 @@ const MoviesCard = ({ link, alt, title, duration }) => {
           ''
         )}
         {location === '/saved-movies' ? (
-          <button onClick={handleDeleteCard} className="card__button-remove" />
+          <button
+            className="card__button-remove"
+            type='button'
+            onClick={handleDeleteCard}
+          />
         ) : (
           ''
         )}
@@ -50,7 +55,7 @@ const MoviesCard = ({ link, alt, title, duration }) => {
         </a>
       </div>
       <div className="card__data-container">
-        <p className="card__title">{title}</p>
+        <h2 className="card__title">{title}</h2>
         <div className="card__duration-container">
           <p className="card__duration-value">{duration}</p>
         </div>

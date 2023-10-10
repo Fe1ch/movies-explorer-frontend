@@ -18,7 +18,7 @@ const PageWithForm = ({
         <Link to="/">
           <img className="form-page__logo" alt="Логотип" src={logo} />
         </Link>
-        <p className="form-page__title">{title}</p>
+        <h1 className="form-page__title">{title}</h1>
         <form
           className="form-page__form"
           name={formName}

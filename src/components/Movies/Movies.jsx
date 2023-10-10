@@ -7,25 +7,27 @@ import cardImage from '../../images/card_image.jpg';
 const Movies = () => {
 
   return (
-    <section className="movies">
-      <SearchForm />
-      <MoviesCardList>
-        <MoviesCard
-          link={cardImage}
-          alt="Карточка"
-          title="По волнам: Искусство звука в кино"
-          duration="1ч 17м"
-        />
-      </MoviesCardList>
-      <div className="movies__button-container">
-        <button
-          className="movies__load-button"
-          type='button'
-        >
-          Ещё
-        </button>
-      </div>
-    </section>
+    <main className="content">
+      <section className="movies">
+        <SearchForm />
+        <MoviesCardList>
+          <MoviesCard
+            link={cardImage}
+            alt="Карточка"
+            title="По волнам: Искусство звука в кино"
+            duration="1ч 17м"
+          />
+        </MoviesCardList>
+        <div className="movies__button-container">
+          <button
+            className="movies__load-button"
+            type='button'
+          >
+            Ещё
+          </button>
+        </div>
+      </section>
+    </main>
   );
 }
 

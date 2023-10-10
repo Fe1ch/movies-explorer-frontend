@@ -13,7 +13,10 @@ const SearchForm = () => {
             placeholder="Фильм"
             required
           />
-          <button className="search-section__submit-button" />
+          <button
+            className="search-section__submit-button"
+            type='submit'
+          />
         </div>
         <FilterCheckbox title="Короткометражки" />
         <div className='search-section__line' />
