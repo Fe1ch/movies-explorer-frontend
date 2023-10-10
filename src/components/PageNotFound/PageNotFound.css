@@ -41,6 +41,11 @@
   line-height: 17px;
   color: #4285f4;
   margin: 184px auto 0;
+  transition: opacity 0.5s
+}
+
+.not-found__button:hover {
+  opacity: 0.8;
 }
 
 @media screen and (max-width: 769px) {

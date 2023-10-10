@@ -47,7 +47,6 @@ const Login = ({ setLoggedIn }) => {
           required={true}
           validationMessage={values.email.validationMessage}
           minLength="2"
-          maxLength="30"
           placeholder="E-mail"
         />
         <Input

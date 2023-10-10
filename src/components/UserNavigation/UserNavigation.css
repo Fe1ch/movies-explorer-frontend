@@ -48,9 +48,10 @@
   line-height: 16px;
   text-decoration: none;
   padding: 8px 20px;
+  transition: opacity 0.5s;
 }
 
-.navigation-bar__button:hover {
+.header__navigation-bar-button:hover {
   opacity: 0.8;
 }
 

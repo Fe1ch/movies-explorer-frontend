@@ -1,7 +1,10 @@
 import './Profile.css';
 import { useForm } from '../../../utils/hooks/useForm';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = ({ setIsLoggedIn }) => {
+
+  const navigate = useNavigate();
 
   const { values, handleChange } = useForm({
     name: {
@@ -18,6 +21,7 @@ const Profile = ({ setIsLoggedIn }) => {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    navigate('/')
   };
   return (
     <section className="profile">
