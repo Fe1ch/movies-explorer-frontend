@@ -40,6 +40,9 @@ const Register = () => {
           value={values.name.value}
           onChange={handleChange}
           required={true}
+          minLength="2"
+          maxLength="30"
+          placeholder="Имя"
           validationMessage={values.name.validationMessage}
         />
         <Input
@@ -49,6 +52,8 @@ const Register = () => {
           value={values.email.value}
           onChange={handleChange}
           required={true}
+          minLength="2"
+          placeholder="E-mail"
           validationMessage={values.email.validationMessage}
         />
         <Input
@@ -58,6 +63,9 @@ const Register = () => {
           value={values.password.value}
           onChange={handleChange}
           required={true}
+          minLength="8"
+          maxLength="30"
+          placeholder="Введите пароль"
           validationMessage={values.password.validationMessage}
         />
         <span className="register__error">

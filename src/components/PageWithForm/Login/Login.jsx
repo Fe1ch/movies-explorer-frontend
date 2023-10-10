@@ -48,7 +48,7 @@ const Login = ({ setLoggedIn }) => {
           validationMessage={values.email.validationMessage}
           minLength="2"
           maxLength="30"
-          placeholder="example@example.com"
+          placeholder="E-mail"
         />
         <Input
           name="password"
