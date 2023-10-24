@@ -3,6 +3,7 @@ import './ScrollToTopButton.css'
 import { useEffect, useState } from 'react';
 
 const ScrollToTopButton = () => {
+
   const [isVisible, setIsVisible] = useState(false);
 
   // Отслеживаем прокрутку страницы и обновляем состояние isVisible
@@ -39,4 +40,4 @@ const ScrollToTopButton = () => {
   )
 }
 
-export default ScrollToTopButton
+export default ScrollToTopButton;

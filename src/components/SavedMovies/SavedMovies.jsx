@@ -38,6 +38,7 @@ const SavedMovies = ({ savedMovies, onDeleteMovie }) => {
       setIsNotFound(false);
     }
   }, [filteredMovies]);
+
   return (
     <main>
       <section className="saved-movies">

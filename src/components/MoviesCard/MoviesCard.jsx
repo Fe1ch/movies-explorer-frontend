@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 
 const MoviesCard = ({ movie, onSaveMovie, isSavedFilms, onDeleteMovie, savedMovies }) => {
 
-
-
   const isLiked = savedMovies.some((saveMovie) => saveMovie.movieId === movie.id);
   const [isSaved, setIsSaved] = useState(isLiked);
 

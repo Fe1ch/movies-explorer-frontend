@@ -1,7 +1,8 @@
 import './SearchForm.css';
-import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
+
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import { KEYWORD_REQUIRED, MOVIE_TITLE } from '../../utils/config/config';
 
 const SearchForm = ({ onSearch, onFilter, isCheckboxActive }) => {
@@ -19,7 +20,6 @@ const SearchForm = ({ onSearch, onFilter, isCheckboxActive }) => {
       setSearchValue('');
     }
   }, [location]);
-
 
   const changeSearch = (e) => {
     setSearchValue(e.target.value);

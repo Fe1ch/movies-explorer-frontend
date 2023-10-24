@@ -108,10 +108,6 @@ const Movies = ({ savedMovies, onSaveMovie, onDeleteMovie }) => {
     }
   }, [filteredMovies]);
 
-
-
-
-
   return (
     <main className="content">
       <section className="movies">
