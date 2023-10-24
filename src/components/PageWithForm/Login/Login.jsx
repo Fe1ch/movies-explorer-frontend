@@ -14,7 +14,6 @@ const Login = ({ handleLogin, isServerMessageError, isDisabledInput }) => {
     resetForm();
   };
 
-
   return (
     <main className="content">
       <PageWithForm

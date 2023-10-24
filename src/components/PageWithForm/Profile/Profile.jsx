@@ -2,6 +2,7 @@ import './Profile.css';
 import useFormValidation from '../../../utils/hooks/useFormValidation';
 import { CurrentUserContext } from '../../../contexts/CurrentUserContext';
 import { useContext, useEffect, useState } from 'react';
+import { PROFILE_UPDATE_COMPLETED, PROFILE_UPDATE_ERROR } from '../../../utils/config/config';
 
 const Profile = ({ handleLogout, handleUpdateProfile, isServerMessageError, isDisabledInput, isServerMessageComplete }) => {
 
@@ -18,7 +19,7 @@ const Profile = ({ handleLogout, handleUpdateProfile, isServerMessageError, isDi
       name: name,
       email: email,
     })
-  }, [setValues]);
+  }, [email, name, setValues]);
 
   useEffect(() => {
     if (name !== values.name || email !== values.email) {
@@ -95,9 +96,9 @@ const Profile = ({ handleLogout, handleUpdateProfile, isServerMessageError, isDi
               <>
                 {<span className={`profile__error ${isServerMessageComplete && 'profile__complete'}`}>
                   {isServerMessageError
-                    ? 'При обновлении профиля произошла ошибка.'
+                    ? PROFILE_UPDATE_ERROR
                     : isServerMessageComplete
-                      ? 'Профиль успешно обновлен.'
+                      ? PROFILE_UPDATE_COMPLETED
                       : ''}
                 </span>}
                 <button

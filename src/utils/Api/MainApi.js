@@ -54,24 +54,24 @@ export const checkToken = (token) => {
 }
 
 // Загрузка информации о пользователе
-export const getUserInfo = (token) => {
+export const getUserInfo = () => {
   return fetch(`${MAIN_API_URL}/users/me`, {
     method: 'GET',
     headers: {
-      'Authorization': `Bearer ${token}`,
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   }).then((res) => checkResponse(res))
 }
 
 // Редактирование профиля
-export const updateProfile = ({ name, email, token }) => {
+export const updateProfile = ({ name, email }) => {
   return fetch(`${MAIN_API_URL}/users/me`, {
     method: 'PATCH',
     headers: {
-      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     body: JSON.stringify({
       name: name,
@@ -81,23 +81,23 @@ export const updateProfile = ({ name, email, token }) => {
 }
 
 // Получение сохраненных карточек
-export const getSavedMovies = (token) => {
+export const getSavedMovies = () => {
   return fetch(`${MAIN_API_URL}/movies`, {
     method: 'GET',
     headers: {
-      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   }).then((res) => checkResponse(res))
 }
 
 // Cохранение карточки на сервере
-export const saveMoviesCard = (movie, token) => {
+export const saveMoviesCard = (movie) => {
   return fetch(`${MAIN_API_URL}/movies`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     body: JSON.stringify({
       country: movie.country,
@@ -116,12 +116,12 @@ export const saveMoviesCard = (movie, token) => {
 }
 
 // Удаление карточки с сервера 
-export const deleteMoviesCard = (movieId, token) => {
+export const deleteMoviesCard = (movieId) => {
   return fetch(`${MAIN_API_URL}/movies/${movieId}`, {
     method: 'DELETE',
     headers: {
-      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   }).then((res) => checkResponse(res))
 }

@@ -19,8 +19,8 @@
 }
 
 .input:focus {
-  outline: 2px solid #4285F4;
-  box-shadow: 0 0 8px #79c1fb;
+  outline: none;
+  box-shadow: 0 0 5px #79c1fb;
 }
 
 .input__label {
@@ -39,7 +39,7 @@
   font-weight: 400;
   line-height: normal;
   position: absolute;
-  top: 78px;
+  top: 68px;
 }
 
 .input_invalid {

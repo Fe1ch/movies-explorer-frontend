@@ -1,31 +1,32 @@
 import "./App.css";
+
 import { useEffect, useState } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { HEADER_LOCATION, FOOTER_LOCATION } from "../../utils/config/config";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import Header from '../Header/Header';
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
-import Footer from '../Footer/Footer';
-import PageNotFound from "../PageNotFound/PageNotFound";
 import Profile from "../PageWithForm/Profile/Profile";
 import Register from "../PageWithForm/Register/Register";
 import Login from "../PageWithForm/Login/Login";
+import Footer from '../Footer/Footer';
+import PageNotFound from "../PageNotFound/PageNotFound";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute"
-import { HEADERLOCATION, FOOTERLOCATION } from "../../utils/config/config";
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import * as mainApi from '../../utils/Api/MainApi';
-import * as moviesApi from '../../utils/Api/MoviesApi'
+import ScrollToTopButton from "../ScrollToTopButton/ScrollToTopButton";
 
 const App = () => {
 
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation().pathname;
 
-  const shouldShowHeader = HEADERLOCATION.some(
-    (item) => location.pathname === item
+  const shouldShowHeader = HEADER_LOCATION.some(
+    (item) => location === item
   );
-  const shouldShowFooter = FOOTERLOCATION.some(
-    (item) => location.pathname === item
+  const shouldShowFooter = FOOTER_LOCATION.some(
+    (item) => location === item
   );
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -36,21 +37,19 @@ const App = () => {
 
   const [savedMovies, setSavedMovies] = useState([]);
 
+
+
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (isLoggedIn && token) {
-      isLoggedIn && Promise.all([mainApi.getUserInfo(token), mainApi.getSavedMovies(token)])
-        .then(([data, movies]) => {
-          setCurrentUser(data)
-          setSavedMovies(movies.reverse());
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-        .finally(() => {
-          // setIsPreloading(false)
-        })
-    }
+    isLoggedIn && Promise.all([mainApi.getUserInfo(), mainApi.getSavedMovies()])
+      .then(([data, movies]) => {
+        setCurrentUser(data)
+        setSavedMovies(movies.reverse());
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+      .finally(() => {
+      })
   }, [isLoggedIn])
 
   const handleRegistration = (name, email, password) => {
@@ -78,7 +77,6 @@ const App = () => {
         localStorage.setItem('token', data.token);
         setIsLoggedIn(true);
         navigate('/movies');
-        setIsServerMessageError('Профиль успешно обновлён!')
       })
       .catch((err) => {
         setIsServerMessageError(err.message)
@@ -90,7 +88,7 @@ const App = () => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.clear();
     setIsLoggedIn(false);
     navigate('/');
   };
@@ -103,7 +101,7 @@ const App = () => {
         .then((res) => {
           if (res) {
             setIsLoggedIn(true);
-            navigate('/movies', { replace: true })
+            navigate('/movies')
           }
         })
         .catch((err) => {
@@ -118,10 +116,9 @@ const App = () => {
   }, []);
 
   const handleUpdateProfile = ({ name, email }) => {
-    const token = localStorage.getItem('token');
     setIsDisabledInput(true)
     mainApi
-      .updateProfile({ name, email, token })
+      .updateProfile({ name, email })
       .then(() => {
         setCurrentUser({ name, email });
         setIsServerMessageComplete(true);
@@ -137,30 +134,51 @@ const App = () => {
       })
   }
 
-  const saveMovie = (movieCard) => {
-    const token = localStorage.getItem('token');
+  const handleSaveMovie = (movieCard) => {
     mainApi
-      .saveMoviesCard(movieCard, token)
-      .then((savedCard) => {
-        setSavedMovies([savedCard, ...savedMovies])
+      .saveMoviesCard(movieCard)
+      .then((movieCard) => {
+        setSavedMovies([movieCard, ...savedMovies])
       })
       .catch((err) => {
         console.log(err)
       })
   }
 
-  const deleteMovie = (movieCard) => {
-    const token = localStorage.getItem('token');
-    mainApi
-      .deleteMoviesCard(movieCard._id, token)
-      .then(() => {
-        setSavedMovies((state) => state.filter((card) => card !== movieCard))
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-
+  const handleDeleteMovie = (movie) => {
+    // если карточка пришла из movies
+    if (!movie._id) {
+      const movieToDelete = savedMovies.find((mov) => {
+        return mov.movieId === movie.id;
+      });
+      mainApi
+        .deleteMoviesCard(movieToDelete._id)
+        .then(() => {
+          setSavedMovies(
+            savedMovies.filter((mov) => {
+              return mov._id !== movieToDelete._id;
+            })
+          );
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    } else {
+      // если карточка пришла из saved-movies
+      mainApi
+        .deleteMoviesCard(movie._id)
+        .then(() => {
+          setSavedMovies(
+            savedMovies.filter((mov) => {
+              return mov._id !== movie._id;
+            })
+          );
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  };
 
   return (
     <div className="page">
@@ -181,8 +199,8 @@ const App = () => {
                   element={Movies}
                   isLoggedIn={isLoggedIn}
                   savedMovies={savedMovies}
-                  saveMovie={saveMovie}
-                  deleteMovie={deleteMovie}
+                  onSaveMovie={handleSaveMovie}
+                  onDeleteMovie={handleDeleteMovie}
                 />
               } />
             <Route
@@ -192,8 +210,7 @@ const App = () => {
                   element={SavedMovies}
                   isLoggedIn={isLoggedIn}
                   savedMovies={savedMovies}
-                  saveMovie={saveMovie}
-                  deleteMovie={deleteMovie}
+                  onDeleteMovie={handleDeleteMovie}
                 />} />
             <Route
               path="/signup"
@@ -229,6 +246,7 @@ const App = () => {
               } />
           </Routes>
           {shouldShowFooter && <Footer />}
+          <ScrollToTopButton />
         </CurrentUserContext.Provider>
       </div>
     </div>
