@@ -20,6 +20,7 @@ import ScrollToTopButton from "../ScrollToTopButton/ScrollToTopButton";
 const App = () => {
 
   const navigate = useNavigate();
+  console.log(navigate)
   const location = useLocation().pathname;
 
   const shouldShowHeader = HEADER_LOCATION.some(
@@ -32,7 +33,7 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [isServerMessageError, setIsServerMessageError] = useState('');
-  const [isServerMessageComplete, setIsServerMessageComplete] = useState(false);
+  const [isServerMessageComplete, setIsServerMessageComplete] = useState('');
   const [isDisabledInput, setIsDisabledInput] = useState(false);
 
   const [savedMovies, setSavedMovies] = useState([]);
@@ -76,7 +77,7 @@ const App = () => {
       .then((data) => {
         localStorage.setItem('token', data.token);
         setIsLoggedIn(true);
-        navigate('/movies');
+        navigate('/movies', { replace: true });
       })
       .catch((err) => {
         setIsServerMessageError(err.message)
@@ -90,7 +91,7 @@ const App = () => {
   const handleLogout = () => {
     localStorage.clear();
     setIsLoggedIn(false);
-    navigate('/');
+    navigate('/', { replace: true });
   };
 
   const handleCheckToken = () => {
@@ -101,7 +102,7 @@ const App = () => {
         .then((res) => {
           if (res) {
             setIsLoggedIn(true);
-            navigate('/movies')
+            navigate(location)
           }
         })
         .catch((err) => {
@@ -121,10 +122,7 @@ const App = () => {
       .updateProfile({ name, email })
       .then(() => {
         setCurrentUser({ name, email });
-        setIsServerMessageComplete(true);
-        setTimeout(() => {
-          setIsServerMessageComplete(false);
-        }, 4000);
+        setIsServerMessageComplete('Данные успешно обновлены');
       })
       .catch((err) => {
         setIsServerMessageError(err.message)
@@ -236,7 +234,9 @@ const App = () => {
                   handleLogout={handleLogout}
                   handleUpdateProfile={handleUpdateProfile}
                   isServerMessageError={isServerMessageError}
+                  setIsServerMessageError={setIsServerMessageError}
                   isServerMessageComplete={isServerMessageComplete}
+                  setIsServerMessageComplete={setIsServerMessageComplete}
                   isDisabledInput={isDisabledInput}
                 />} />
             <Route

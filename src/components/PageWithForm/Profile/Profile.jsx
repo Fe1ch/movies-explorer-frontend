@@ -2,9 +2,16 @@ import './Profile.css';
 import useFormValidation from '../../../utils/hooks/useFormValidation';
 import { CurrentUserContext } from '../../../contexts/CurrentUserContext';
 import { useContext, useEffect, useState } from 'react';
-import { PROFILE_UPDATE_COMPLETED, PROFILE_UPDATE_ERROR } from '../../../utils/config/config';
 
-const Profile = ({ handleLogout, handleUpdateProfile, isServerMessageError, isDisabledInput, isServerMessageComplete }) => {
+const Profile = ({
+  handleLogout,
+  handleUpdateProfile,
+  isServerMessageError,
+  setIsServerMessageError,
+  isServerMessageComplete,
+  setIsServerMessageComplete,
+  isDisabledInput,
+}) => {
 
   const [isVisible, setIsVisible] = useState(false);
   const [isDisable, setIsDisabled] = useState(false);
@@ -12,7 +19,7 @@ const Profile = ({ handleLogout, handleUpdateProfile, isServerMessageError, isDi
 
   const { name, email } = useContext(CurrentUserContext);
 
-  const { values, setValues, handleChange, errors } = useFormValidation();
+  const { values, setValues, handleChange, errors, isValid } = useFormValidation();
 
   useEffect(() => {
     setValues({
@@ -31,6 +38,8 @@ const Profile = ({ handleLogout, handleUpdateProfile, isServerMessageError, isDi
 
   const changeVisibility = () => {
     setIsVisible(true);
+    setIsServerMessageError('')
+    setIsServerMessageComplete('')
   }
 
   const onSubmit = (e) => {
@@ -43,10 +52,11 @@ const Profile = ({ handleLogout, handleUpdateProfile, isServerMessageError, isDi
     setTimeout(() => {
       setIsVisible(false)
       setIsEditing(false)
-    }, 2500)
+      setIsServerMessageError('')
+      setIsServerMessageComplete('')
+    }, 4000)
+
   }
-
-
 
   return (
     <main className="content">
@@ -69,7 +79,7 @@ const Profile = ({ handleLogout, handleUpdateProfile, isServerMessageError, isDi
               minLength="2"
               maxLength="30"
               required
-              disabled={isEditing || isDisabledInput || !isVisible}
+              disabled={(isVisible ? false : true) || isDisabledInput || isEditing}
             />
             <span className="profile__input-error">
               {errors.name}
@@ -85,7 +95,7 @@ const Profile = ({ handleLogout, handleUpdateProfile, isServerMessageError, isDi
               value={values.email || ''}
               onChange={handleChange}
               required
-              disabled={isEditing || isDisabledInput || !isVisible}
+              disabled={(isVisible ? false : true) || isDisabledInput || isEditing}
             />
             <span className="profile__input-error">
               {errors.email}
@@ -95,17 +105,13 @@ const Profile = ({ handleLogout, handleUpdateProfile, isServerMessageError, isDi
             {isVisible ? (
               <>
                 {<span className={`profile__error ${isServerMessageComplete && 'profile__complete'}`}>
-                  {isServerMessageError
-                    ? PROFILE_UPDATE_ERROR
-                    : isServerMessageComplete
-                      ? PROFILE_UPDATE_COMPLETED
-                      : ''}
+                  {isServerMessageError || isServerMessageComplete}
                 </span>}
                 <button
-                  className={`profile__button-save ${!isDisable ? 'profile__button-save_disabled' : ''} `}
+                  className={`profile__button-save ${!isValid || !isDisable ? 'profile__button-save_disabled' : ''} `}
                   type='submit'
                   onClick={changeVisibility}
-                  disabled={!isDisable}
+                  disabled={!isValid || !isDisable}
                 >
                   Сохранить
                 </button>
