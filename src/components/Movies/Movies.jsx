@@ -20,6 +20,8 @@ const Movies = ({ savedMovies, onSaveMovie, onDeleteMovie }) => {
   const [isRequestError, setIsRequestError] = useState(false);
   // ошибка при отсутствии найденных фильмов
   const [isNotFound, setIsNotFound] = useState(false);
+  // статус загрузки нового поиска фильмов
+  const [isLoadingMoviesSearching, setIsLoadingMoviesSearching] = useState(false);
 
   // получаем отфильтрованный массив фильмов
   const getFilterMovies = (movies, searchQuery, isCheckbox) => {
@@ -33,7 +35,7 @@ const Movies = ({ savedMovies, onSaveMovie, onDeleteMovie }) => {
     localStorage.setItem('allMovies', JSON.stringify(movies));
   }
 
-  // фильтруем фильмы в засисимости от состояния чекбокса короткометражек
+  // фильтруем фильмы в зависимости от состояния чекбокса короткометражек
   const handleFilterCheckbox = () => {
     setIsCheckboxActive(!isCheckboxActive);
     if (!isCheckboxActive) {
@@ -49,6 +51,7 @@ const Movies = ({ savedMovies, onSaveMovie, onDeleteMovie }) => {
   }
 
   const handleSearchMovies = (searchQuery) => {
+    setIsLoadingMoviesSearching(searchQuery)
     localStorage.setItem('movieSearch', searchQuery);
     localStorage.setItem('shortMovies', isCheckboxActive);
     if (localStorage.getItem('allMovies')) {
@@ -125,6 +128,7 @@ const Movies = ({ savedMovies, onSaveMovie, onDeleteMovie }) => {
           isRequestError={isRequestError}
           isNotFound={isNotFound}
           isLoading={isLoading}
+          isLoadingMoviesSearching={isLoadingMoviesSearching}
         />
       </section>
     </main>

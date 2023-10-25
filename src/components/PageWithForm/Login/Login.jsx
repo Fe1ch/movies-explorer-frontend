@@ -6,12 +6,11 @@ import useFormValidation from '../../../utils/hooks/useFormValidation';
 
 const Login = ({ handleLogin, isServerMessageError, isDisabledInput }) => {
 
-  const { values, handleChange, errors, isValid, resetForm } = useFormValidation();
+  const { values, handleChange, errors, isValid } = useFormValidation();
 
   const onSubmit = (e) => {
     e.preventDefault();
     handleLogin(values.email, values.password);
-    resetForm();
   };
 
   return (

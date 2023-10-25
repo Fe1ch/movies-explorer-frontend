@@ -20,7 +20,6 @@ import ScrollToTopButton from "../ScrollToTopButton/ScrollToTopButton";
 const App = () => {
 
   const navigate = useNavigate();
-  console.log(navigate)
   const location = useLocation().pathname;
 
   const shouldShowHeader = HEADER_LOCATION.some(

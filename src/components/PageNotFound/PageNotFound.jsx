@@ -6,7 +6,7 @@ const PageNotFound = () => {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
-    navigate(-3, { replace: true });
+    navigate(-2, { replace: true });
   }
 
   return (

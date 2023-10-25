@@ -19,28 +19,32 @@ import {
   SHOW_MOVIES_TABLET
 } from '../../utils/config/config';
 
-const MoviesCardList = ({ filteredMovies, savedMovies, onSaveMovie, onDeleteMovie, isSavedFilms, isRequestError, isNotFound, isLoading }) => {
+const MoviesCardList = ({ filteredMovies, savedMovies, onSaveMovie, onDeleteMovie, isSavedFilms, isRequestError, isNotFound, isLoading, isLoadingMoviesSearching }) => {
 
   const location = useLocation().pathname;
   // количество показываемых карточек
   const [shownMoviesQuantity, setShownMoviesQuantity] = useState(0);
+  const [numberMoviesToAdd, setNumberMoviesToAdd] = useState(0)
 
-  // устанавливем видимое количество карточек на странице в зависимости от разрешения экрана
+  // устанавливаем видимое количество карточек на странице в зависимости от разрешения экрана
   const setShownQuantity = () => {
     const display = window.innerWidth;
     if (display > SCREEN_SIZE_DESKTOP) {
       setShownMoviesQuantity(SHOW_MOVIES_DESKTOP);
+      setNumberMoviesToAdd(0)
     } else if (display > SCREEN_SIZE_MIN_TABLET && display < SCREEN_SIZE_MAX_TABLET) {
       setShownMoviesQuantity(SHOW_MOVIES_TABLET);
+      setNumberMoviesToAdd(0)
     } else if (display < SCREEN_SIZE_MOBILE) {
       setShownMoviesQuantity(SHOW_MOVIES_MOBILE);
+      setNumberMoviesToAdd(0)
     }
   }
-
-  // колличество карточек устанавливается при открытии страницы
+  // количество карточек устанавливается при открытии страницы
   useEffect(() => {
     setShownQuantity();
-  }, []);
+  }, [isLoadingMoviesSearching]);
+
 
   // откладываем работу функции в случае изменения ширины экрана в отладчике
   useEffect(() => {
@@ -52,15 +56,15 @@ const MoviesCardList = ({ filteredMovies, savedMovies, onSaveMovie, onDeleteMovi
     }
   }, []);
 
-  // функция подгрузки карточек в зависимости от разрешения экрана
+  // функция подгруздки карточек в зависимости от разрешения экрана
   const loadMoreMovies = () => {
     const display = window.innerWidth;
     if (display > SCREEN_SIZE_DESKTOP) {
-      setShownMoviesQuantity(shownMoviesQuantity + MOVIES_ADD_DESKTOP);
+      setNumberMoviesToAdd(numberMoviesToAdd + MOVIES_ADD_DESKTOP);
     } else if (display > SCREEN_SIZE_MIN_TABLET && display < SCREEN_SIZE_MAX_TABLET) {
-      setShownMoviesQuantity(shownMoviesQuantity + MOVIES_ADD_MOBILE);
+      setNumberMoviesToAdd(numberMoviesToAdd + MOVIES_ADD_MOBILE);
     } else if (display < SCREEN_SIZE_MOBILE) {
-      setShownMoviesQuantity(shownMoviesQuantity + MOVIES_ADD_MOBILE);
+      setNumberMoviesToAdd(numberMoviesToAdd + MOVIES_ADD_MOBILE);
     }
   }
 
@@ -90,7 +94,7 @@ const MoviesCardList = ({ filteredMovies, savedMovies, onSaveMovie, onDeleteMovi
           ) : (
             <>
               <ul className='cards__list'>
-                {filteredMovies.slice(0, shownMoviesQuantity).map(movie => {
+                {filteredMovies.slice(0, shownMoviesQuantity + numberMoviesToAdd).map(movie => {
                   return (
                     <MoviesCard
                       movie={movie}
@@ -104,7 +108,7 @@ const MoviesCardList = ({ filteredMovies, savedMovies, onSaveMovie, onDeleteMovi
                 })}
               </ul>
               <div className="movies__button-container">
-                {filteredMovies.length > shownMoviesQuantity ? (
+                {filteredMovies.length > numberMoviesToAdd ? (
                   <button onClick={loadMoreMovies} type="button" className="movies__load-button">Ещё</button>
                 ) : ''}
               </div>
