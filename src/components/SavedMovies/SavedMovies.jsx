@@ -1,36 +1,58 @@
 import './SavedMovies.css';
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import SearchForm from '../SearchForm/SearchForm';
-import MoviesCard from '../MoviesCard/MoviesCard';
-import cardImage from '../../images/card_image.jpg';
 
-const SavedMovies = () => {
+import { useEffect, useState } from 'react';
+import { filterDuration, filterMovies } from '../../utils/hooks/MoviesFilter';
+import SearchForm from '../SearchForm/SearchForm';
+import MoviesCardList from '../MoviesCardList/MoviesCardList';
+
+const SavedMovies = ({ savedMovies, onDeleteMovie }) => {
+  // массив фильмов, отфильтрованный по запросу и длительности
+  const [filteredMovies, setFilteredMovies] = useState(savedMovies);
+  // статус состояния чекбокса короткометражек
+  const [isCheckboxActive, setIsCheckboxActive] = useState(false);
+  // ошибка при отсутствии найденных фильмов
+  const [isNotFound, setIsNotFound] = useState(false);
+  // запрос пользователя
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // меняем запрос в поисковой строке
+  function onSearchMovies(query) {
+    setSearchQuery(query);
+  }
+
+  // переключаем состояние чекбокса
+  function handleShortMovies() {
+    setIsCheckboxActive(!isCheckboxActive);
+  }
+
+  // получаем отфильтрованные фильмы
+  useEffect(() => {
+    const moviesList = filterMovies(savedMovies, searchQuery);
+    setFilteredMovies(isCheckboxActive ? filterDuration(moviesList) : moviesList);
+  }, [savedMovies, isCheckboxActive, searchQuery]);
+
+  useEffect(() => {
+    if (filteredMovies.length === 0) {
+      setIsNotFound(true);
+    } else {
+      setIsNotFound(false);
+    }
+  }, [filteredMovies]);
 
   return (
-    <main className="content">
-      <section className='saved-movies'>
-        <SearchForm />
-        <MoviesCardList>
-          <MoviesCard
-            link={cardImage}
-            alt="Карточка"
-            title="По волнам: Искусство звука в кино"
-            duration="1ч 17м"
-          />
-          <MoviesCard
-            link={cardImage}
-            alt="Карточка"
-            title="По волнам: Искусство звука в кино"
-            duration="1ч 17м"
-          />
-          <MoviesCard
-            link={cardImage}
-            alt="Карточка"
-            title="По волнам: Искусство звука в кино"
-            duration="1ч 17м"
-          />
-        </MoviesCardList>
-      </section >
+    <main>
+      <section className="saved-movies">
+        <SearchForm
+          onSearch={onSearchMovies}
+          onFilter={handleShortMovies} />
+        <MoviesCardList
+          savedMovies={savedMovies}
+          isNotFound={isNotFound}
+          isSavedFilms={true}
+          filteredMovies={filteredMovies}
+          onDeleteMovie={onDeleteMovie}
+        />
+      </section>
     </main>
   )
 }

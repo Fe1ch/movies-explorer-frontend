@@ -4,13 +4,15 @@ const Input = ({
   name,
   type,
   value,
+  pattern,
   required,
   label,
   onChange,
   validationMessage,
   minLength,
   maxLength,
-  placeholder
+  placeholder,
+  disabled,
 }) => {
 
   return (
@@ -24,11 +26,14 @@ const Input = ({
         name={name}
         id={name}
         value={value}
+        pattern={pattern}
         onChange={onChange}
         required={required}
         minLength={minLength}
         maxLength={maxLength}
         placeholder={placeholder}
+        disabled={disabled}
+        autoComplete='off'
       />
       <span className="input__error">{validationMessage}</span>
     </div>

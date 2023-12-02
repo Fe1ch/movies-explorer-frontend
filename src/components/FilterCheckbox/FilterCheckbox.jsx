@@ -1,11 +1,22 @@
 import './FilterCheckbox.css'
 
-const FilterCheckbox = ({ title }) => {
+const FilterCheckbox = ({ title, onFilter, isActive }) => {
 
   return (
     <>
-      <input className="switch" id="switch" type="checkbox" />
-      <label className="switch-label" htmlFor="switch">{title}</label>
+      <input
+        className="switch"
+        id="switch"
+        type="checkbox"
+        onChange={onFilter}
+        checked={isActive}
+      />
+      <label
+        className="switch-label"
+        htmlFor="switch"
+      >
+        {title}
+      </label>
     </>
   );
 }

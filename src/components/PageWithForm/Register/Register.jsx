@@ -2,27 +2,16 @@ import './Register.css';
 import Input from '../Input/Input';
 import SubmitButton from '../SubmitButton/SubmitButton';
 import PageWithForm from '../PageWithForm';
-import { useForm } from '../../../utils/hooks/useForm';
+import useFormValidation from '../../../utils/hooks/useFormValidation';
 
-const Register = () => {
+const Register = ({ handleRegistration, isServerMessageError, isDisabledInput }) => {
 
-  const { values, handleChange } = useForm({
-    name: {
-      isValid: '',
-      validationMessage: '',
-      value: '',
-    },
-    email: {
-      isValid: '',
-      validationMessage: '',
-      value: '',
-    },
-    password: {
-      isValid: '',
-      validationMessage: '',
-      value: '',
-    },
-  });
+  const { values, handleChange, errors, isValid } = useFormValidation();
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    handleRegistration(values.name, values.email, values.password);
+  };
 
   return (
     <main className="content">
@@ -32,52 +21,55 @@ const Register = () => {
         underButtonText="Уже зарегистрированы?"
         link="/signin"
         linkName="Войти"
+        onSubmit={onSubmit}
       >
         <div className="register__container">
           <Input
             name="name"
             type="text"
             label="Имя"
-            value={values.name.value}
+            value={values.name || ''}
             onChange={handleChange}
             required={true}
             minLength="2"
             maxLength="30"
             placeholder="Имя"
-            validationMessage={values.name.validationMessage}
+            validationMessage={errors.name}
+            disabled={isDisabledInput}
           />
           <Input
             name="email"
             type="email"
             label="E-mail"
-            value={values.email.value}
+            pattern="^\S+@\S+\.\S+$"
+            value={values.email || ''}
             onChange={handleChange}
             required={true}
             minLength="2"
             placeholder="E-mail"
-            validationMessage={values.email.validationMessage}
+            validationMessage={errors.email}
+            disabled={isDisabledInput}
           />
           <Input
             name="password"
             type="password"
             label="Пароль"
-            value={values.password.value}
+            value={values.password || ''}
             onChange={handleChange}
             required={true}
             minLength="8"
             maxLength="30"
             placeholder="Введите пароль"
-            validationMessage={values.password.validationMessage}
+            validationMessage={errors.password}
+            disabled={isDisabledInput}
           />
           <span className="register__error">
-            Пользователь с таким email уже существует.
+            {isServerMessageError}
           </span>
         </div>
         <SubmitButton
           title="Зарегистрироваться"
-          disabled={
-            values.name.isValid && values.email.isValid && values.password.isValid
-          }
+          disabled={isValid}
         />
       </PageWithForm>
     </main>

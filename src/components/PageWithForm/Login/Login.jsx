@@ -2,31 +2,16 @@ import './Login.css';
 import Input from '../Input/Input';
 import SubmitButton from '../SubmitButton/SubmitButton';
 import PageWithForm from '../PageWithForm';
-import { useNavigate } from 'react-router-dom';
-import { useForm } from '../../../utils/hooks/useForm';
+import useFormValidation from '../../../utils/hooks/useFormValidation';
 
-const Login = ({ setLoggedIn }) => {
+const Login = ({ handleLogin, isServerMessageError, isDisabledInput }) => {
 
-  const navigate = useNavigate();
+  const { values, handleChange, errors, isValid } = useFormValidation();
 
-  const onSubmit = (evt) => {
-    evt.preventDefault();
-    setLoggedIn(true);
-    navigate('/movies', { replace: true });
+  const onSubmit = (e) => {
+    e.preventDefault();
+    handleLogin(values.email, values.password);
   };
-
-  const { values, handleChange } = useForm({
-    email: {
-      isValid: '',
-      validationMessage: '',
-      value: '',
-    },
-    password: {
-      isValid: '',
-      validationMessage: '',
-      value: '',
-    },
-  });
 
   return (
     <main className="content">
@@ -43,32 +28,35 @@ const Login = ({ setLoggedIn }) => {
             name="email"
             type="email"
             label="E-mail"
-            value={values.email.value}
+            pattern="^\S+@\S+\.\S+$"
+            value={values.email || ''}
             onChange={handleChange}
             required={true}
-            validationMessage={values.email.validationMessage}
+            validationMessage={errors.email}
             minLength="2"
             placeholder="E-mail"
+            disabled={isDisabledInput}
           />
           <Input
             name="password"
             type="password"
             label="Пароль"
-            value={values.password.value}
+            value={values.password || ''}
             onChange={handleChange}
             required={true}
-            validationMessage={values.password.validationMessage}
+            validationMessage={errors.password}
             minLength="8"
             maxLength="30"
             placeholder="Введите пароль"
+            disabled={isDisabledInput}
           />
           <span className="login__error">
-            Вы ввели неправильный логин или пароль.
+            {isServerMessageError}
           </span>
         </div>
         <SubmitButton
           title="Войти"
-          disabled={values.email.isValid && values.password.isValid}
+          disabled={isValid}
         />
       </PageWithForm>
     </main>
